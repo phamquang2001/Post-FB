@@ -3,8 +3,7 @@ import axios from 'axios';
 
 export async function GET(request: Request) {
   try {
-    // Lấy Google Sheet API URL từ biến môi trường
-    const googleSheetApiUrl = process.env.GOOGLE_SHEET_API_URL;
+    const googleSheetApiUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL;
     
     if (!googleSheetApiUrl) {
       return NextResponse.json(
@@ -12,10 +11,7 @@ export async function GET(request: Request) {
         { status: 400 }
       );
     }
-    console.log("321a321", googleSheetApiUrl)
-    // Lấy danh sách bài viết chờ đăng từ Google Sheet
     const response = await axios.get(googleSheetApiUrl);
-    console.log("1111", response)
     // const posts = response.data.data || [];
     let posts = [];
     
@@ -58,40 +54,42 @@ export async function GET(request: Request) {
     
     // Xử lý từng bài viết
     for (const post of posts) {
-      // Kiểm tra thời gian đăng
-      const postTime = post.post_time ? new Date(post.post_time) : null;
-      const now = new Date();
-      
-      // Đăng bài nếu không có thời gian lên lịch hoặc đã đến thời gian
-      if (!postTime || postTime <= now) {
-        try {
-          const postResponse = await axios.post(apiUrl, {
-            rowIndex: post.rowIndex,
-            description: post.description,
-            imageUrl: post.image,
-            promptTemplate: post.prompt_template,
-            tags: post.tags,
-            googleSheetApiUrl: googleSheetApiUrl
-          });
-          
-          results.push({
-            rowIndex: post.rowIndex,
-            status: 'Posted',
-            postId: postResponse.data.postId
-          });
-          
-          postedCount++;
-        } catch {
-          results.push({
-            rowIndex: post.rowIndex,
-            status: 'Failed',
-            error: ''
-          });
-          
-          failedCount++;
-        }
-      }
+  const postTime = post.post_time ? new Date(post.post_time) : null;
+  const now = new Date();
+
+  if (!postTime || postTime <= now) {
+    try {
+      const postResponse = await axios.post(apiUrl, {
+        rowIndex: post.rowIndex,
+        description: post.description,
+        imageUrl: post.image,
+        promptTemplate: post.prompt_template,
+        tags: post.tags,
+        googleSheetApiUrl: googleSheetApiUrl
+      });
+
+      results.push({
+        rowIndex: post.rowIndex,
+        status: 'Posted',
+        postId: postResponse.data.postId
+      });
+
+      postedCount++;
+    } catch {
+      results.push({
+        rowIndex: post.rowIndex,
+        status: 'Failed',
+        error: ''
+      });
+
+      failedCount++;
     }
+
+    // ❗Chỉ đăng 1 bài rồi thoát vòng lặp
+    break;
+  }
+}
+
     
     return NextResponse.json({
       success: true,
