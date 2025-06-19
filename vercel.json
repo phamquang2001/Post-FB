@@ -1,9 +1,0 @@
-{
-    "cron": [
-      {
-        "path": "/api/check-and-post",
-        "schedule": "0 * * * *" 
-      }
-    ]
-  }
-  
