@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 
 
 type PostItem = {
@@ -77,7 +78,7 @@ export default function Home() {
     }
   };
 
-  const handleSinglePost = async (post : any) => {
+  const handleSinglePost = async (post : PostItem) => {
     const confirmed = window.confirm('Bạn có chắc muốn đăng bài này?');
     if (!confirmed) return;
 
@@ -178,7 +179,7 @@ export default function Home() {
                           {post.image
                             .split(',')
                             .map((url: string, idx: number) => (
-                              <img
+                              <Image
                                 key={idx}
                                 src={url.trim()}
                                 alt={`Image ${idx + 1}`}

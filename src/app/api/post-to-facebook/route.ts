@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       googleSheetApiUrl,
     } = requestBody;
     const imageUrls: string[] = imageUrl
-    ? imageUrl.split(',').map((url : any) => url.trim()).filter(Boolean)
+    ? imageUrl.split(',').map((url : string) => url.trim()).filter(Boolean)
     : [];
     console.log("vcxvxc", imageUrls)
     const pageAccessToken = process.env.PAGE_ACCESS_TOKEN;
@@ -64,7 +64,7 @@ ${tags ? `Hãy đảm bảo đưa các hashtag này vào cuối bài viết: ${t
 
     const optimizedContent = completion.choices[0].message?.content?.trim() || '';
 
-    let postData: {
+    const postData: {
         message: string;
         attached_media?: { media_fbid: string }[];
       } = { message: optimizedContent };
@@ -111,16 +111,14 @@ ${tags ? `Hãy đảm bảo đưa các hashtag này vào cuối bài viết: ${t
       optimizedContent: optimizedContent
     });
 
-  } catch (error: any) {
-    console.error('Error:', error.response?.data || error.message);
-
+  } catch{
     try {
       const requestBody = await request.json();
       if (requestBody.rowIndex && requestBody.googleSheetApiUrl) {
         await axios.post(requestBody.googleSheetApiUrl, {
           rowIndex: requestBody.rowIndex,
           status: "Failed",
-          finalContent: `Error: ${error.response?.data?.error?.message || error.message}`
+          finalContent: ``
         });
       }
     } catch (updateError) {
@@ -130,7 +128,7 @@ ${tags ? `Hãy đảm bảo đưa các hashtag này vào cuối bài viết: ${t
     return NextResponse.json(
       {
         message: 'Error processing request',
-        error: error.response?.data || error.message
+        error: ''
       },
       { status: 500 }
     );

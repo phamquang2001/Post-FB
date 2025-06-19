@@ -81,11 +81,11 @@ export async function GET(request: Request) {
           });
           
           postedCount++;
-        } catch (error: any) {
+        } catch {
           results.push({
             rowIndex: post.rowIndex,
             status: 'Failed',
-            error: error.response?.data || error.message
+            error: ''
           });
           
           failedCount++;
@@ -103,13 +103,12 @@ export async function GET(request: Request) {
       },
       results: results
     });
-  } catch (error: any) {
-    console.error('Error checking and posting:', error);
+  } catch  {
     
     return NextResponse.json(
       { 
         message: 'Error checking and posting', 
-        error: error.response?.data || error.message 
+        error: ''
       },
       { status: 500 }
     );
