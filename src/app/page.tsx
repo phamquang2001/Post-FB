@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Image from 'next/image';
 
 
 type PostItem = {
@@ -40,7 +39,6 @@ export default function Home() {
   const [googleSheetUrl, setGoogleSheetUrl] = useState('');
   const [error, setError] = useState('');
   const googleSheetApiUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_URL ;
-  console.log("312312", googleSheetApiUrl)
   useEffect(() => {
     const savedUrl = localStorage.getItem('googleSheetUrl');
     if (savedUrl) setGoogleSheetUrl(savedUrl);
@@ -100,7 +98,7 @@ export default function Home() {
       setLoading(false);
     }
   };
-
+  
   return (
     <main className="p-8 max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Facebook Auto Poster</h1>
@@ -179,7 +177,7 @@ export default function Home() {
                           {post.image
                             .split(',')
                             .map((url: string, idx: number) => (
-                              <Image
+                              <img
                                 key={idx}
                                 src={url.trim()}
                                 alt={`Image ${idx + 1}`}
