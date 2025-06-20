@@ -62,7 +62,7 @@ ${tags ? `Hãy đảm bảo đưa các hashtag này vào cuối bài viết: ${t
       });
       
 
-    const optimizedContent = completion.choices[0].message?.content?.trim() || '';
+    const optimizedContent = completion.choices[0].message?.content?.trim() || '...';
 
     const postData: {
         message: string;
@@ -88,6 +88,7 @@ ${tags ? `Hãy đảm bảo đưa các hashtag này vào cuối bài viết: ${t
         );
         postData.attached_media = uploadedImages;
       }
+    
     const response = await axios.post(
       `https://graph.facebook.com/v17.0/${pageId}/feed`,
       postData,
