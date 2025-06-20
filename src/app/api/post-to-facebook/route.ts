@@ -93,7 +93,8 @@ ${tags ? `Hãy đảm bảo đưa các hashtag này vào cuối bài viết: ${t
       postData,
       {
         params: {
-          access_token: pageAccessToken
+          access_token: pageAccessToken,
+          published: true
         }
       }
     );
