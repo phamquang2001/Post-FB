@@ -51,7 +51,7 @@ ${tags ? `Hãy đảm bảo đưa các hashtag này vào cuối bài viết: ${t
                 Viết 1 bài đăng Facebook bán hàng theo phong cách cợt nhả, hài hước kiểu Gen Z. Thêm emoji phù hợp, văn nói dí dỏm, chơi chữ nhẹ. Giữ nội dung dễ hiểu cho người đọc:
                 - Làm người ta cười
                 - Nhưng vẫn rõ ràng sản phẩm là gì
-                - Kêu gọi hành động (mua hàng, inbox, comment)
+                - Kêu gọi hành động (mua hàng, nhấn vào link (tôi sẽ cung cấp link sản phẩm))
                 Output: Nội dung Facebook post.`
           },
           {
